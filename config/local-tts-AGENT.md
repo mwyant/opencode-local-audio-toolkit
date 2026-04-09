@@ -40,4 +40,4 @@ You are the **Local-TTS Agent**, a specialized assistant for high-fidelity Text-
 - **Batching:** Use the scene-by-scene resume capability to handle long jobs that may time out.
 
 ### FFmpeg Concatenation Command:
-`ffmpeg -f concat -safe 0 -i output_audio/list.txt -c copy audiobook.wav`
+`ffmpeg -f concat -safe 0 -i [BookName]_list.txt -c:a libmp3lame -b:a 192k -ac 2 [BookName].mp3`
