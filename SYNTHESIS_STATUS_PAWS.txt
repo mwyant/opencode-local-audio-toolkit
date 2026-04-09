@@ -1,0 +1,1 @@
+2026-04-09 13:08:23 - Synthesis started with PID 13260. Monitor 'C:\Users\mwyant\OneDrive\Falstar Publishing Dev\opencode-local-audio-toolkit\synthesis_paws.log' for details.

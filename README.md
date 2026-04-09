@@ -39,6 +39,13 @@ The toolkit includes automatic DLL injection for Windows environments to ensure 
 ## 🤖 Opencode Integration
 The `config/` directory contains template `AGENT.md` and `SKILL.md` files. Copy these to your `.opencode/agents/` and `.opencode/skills/` directories respectively to enable the `local-tts` agent.
 
+### 🧠 Guide for Agents (LLMs)
+If you are an agent tasked with using this toolkit:
+1. **Always use the local venv:** Prepend your python commands with `.\venv\Scripts\python.exe`.
+2. **Pathing:** All scripts should be run from the toolkit root directory.
+3. **Novel Synthesis:** Use `tts/run_background_tts.py` to avoid timeouts. This script starts an independent process. You should then provide the user with the command to monitor the log and exit your task.
+4. **Transcription:** Use `stt/transcribe.py` for files and `stt/record_and_transcribe.py` for microphone input.
+
 ## 📂 Structure
 - `stt/`: Scripts for transcription and recording.
 - `tts/`: Scripts for novel synthesis and background processing.

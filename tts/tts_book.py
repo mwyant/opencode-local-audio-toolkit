@@ -98,7 +98,14 @@ def run_tts():
     
     model_path = os.path.join(toolkit_root, "onnx", "model.onnx")
     voices_path = os.path.join(toolkit_root, "voices.bin")
-    output_dir = os.path.join(toolkit_root, "output_audio")
+    
+    # Optional output directory argument
+    if len(sys.argv) > 2:
+        output_dir = sys.argv[2]
+        if not os.path.isabs(output_dir):
+            output_dir = os.path.join(toolkit_root, output_dir)
+    else:
+        output_dir = os.path.join(toolkit_root, "output_audio")
     
     # If book_path is not absolute, make it relative to root
     if not os.path.isabs(book_path):
