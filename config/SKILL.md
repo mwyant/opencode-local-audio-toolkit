@@ -25,7 +25,7 @@ metadata:
 - High-quality, human-like voice synthesis (defaulting to `af_heart`).
 
 ## How to run
-1. Ensure the `local-tts-poc` environment is available.
-2. Run the `tts_book.py` script located in the PoC directory.
+1. Ensure the `opencode-local-audio-toolkit` environment is available.
+2. Run the `tts/tts_book.py` script located in the toolkit directory.
 3. Concatenate output with:
    `ffmpeg -f concat -safe 0 -i output_audio/list.txt -c copy audiobook.wav`
