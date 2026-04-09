@@ -19,7 +19,14 @@ This toolkit is intended to be used as a **Subagent** or **Tool Process** within
 - NVIDIA GPU with CUDA support (Recommended)
 
 ### 2. Installation
+It is highly recommended to install the modules into a virtual environment named `venv` within the toolkit folder. This ensures the background synthesis runner can always find the correct dependencies.
+
 ```bash
+# From the toolkit root:
+python -m venv venv
+.\venv\Scripts\Activate.ps1  # Windows
+# or: source venv/bin/activate  # Linux/Mac
+
 pip install -r requirements.txt
 ```
 
