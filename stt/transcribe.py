@@ -2,28 +2,10 @@ import time
 import os
 import sys
 
-# Windows DLL path fix for nvidia pip packages
-if sys.platform == "win32":
-    print("Detected Windows, checking for local NVIDIA DLLs...")
-    try:
-        import faster_whisper
-        # Find where faster_whisper is installed (likely venv site-packages)
-        site_packages = os.path.dirname(os.path.dirname(faster_whisper.__file__))
-        nvidia_base = os.path.join(site_packages, "nvidia")
-        
-        if os.path.exists(nvidia_base):
-            print(f"Searching for DLLs in: {nvidia_base}")
-            for root, dirs, files in os.walk(nvidia_base):
-                if "bin" in dirs:
-                    bin_path = os.path.abspath(os.path.join(root, "bin"))
-                    print(f"Adding to DLL search path: {bin_path}")
-                    os.add_dll_directory(bin_path)
-                    # Also add to PATH as a fallback for some libraries
-                    os.environ["PATH"] = bin_path + os.pathsep + os.environ["PATH"]
-        else:
-            print(f"Warning: nvidia base directory not found at {nvidia_base}")
-    except ImportError:
-        print("faster_whisper not imported yet, skipping DLL path fix")
+# Centralized GPU/DLL initialization
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.gpu_init import init_gpu
+init_gpu()
 
 from faster_whisper import WhisperModel
 
@@ -71,5 +53,5 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         test_transcribe(sys.argv[1])
     else:
-        print("Usage: .\\venv\\Scripts\\python.exe transcribe.py <path_to_audio_file>")
-        print("Example: .\\venv\\Scripts\\python.exe transcribe.py sample.mp3")
+        print("Usage: .\\venv\\Scripts\\python.exe stt/transcribe.py <path_to_audio_file>")
+        print("Example: .\\venv\\Scripts\\python.exe stt/transcribe.py sample.mp3")

@@ -1,3 +1,7 @@
+"""
+Usage: .\venv\Scripts\python.exe stt/record_and_transcribe.py [duration_seconds]
+Description: Records from default microphone and transcribes using local GPU.
+"""
 import time
 import os
 import sys
@@ -5,20 +9,10 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 import numpy as np
 
-# Windows DLL path fix for nvidia pip packages
-if sys.platform == "win32":
-    try:
-        import faster_whisper
-        site_packages = os.path.dirname(os.path.dirname(faster_whisper.__file__))
-        nvidia_base = os.path.join(site_packages, "nvidia")
-        if os.path.exists(nvidia_base):
-            for root, dirs, files in os.walk(nvidia_base):
-                if "bin" in dirs:
-                    bin_path = os.path.abspath(os.path.join(root, "bin"))
-                    os.add_dll_directory(bin_path)
-                    os.environ["PATH"] = bin_path + os.pathsep + os.environ["PATH"]
-    except ImportError:
-        pass
+# Centralized GPU/DLL initialization
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.gpu_init import init_gpu
+init_gpu()
 
 from faster_whisper import WhisperModel
 

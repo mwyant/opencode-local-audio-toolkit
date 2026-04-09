@@ -1,3 +1,7 @@
+"""
+Usage: .\venv\Scripts\python.exe tts/tts_book.py [path_to_book.md] [output_dir]
+Description: Synthesizes a markdown book into scene-based WAV files using local GPU/CPU.
+"""
 import os
 import sys
 import time
@@ -5,24 +9,10 @@ import re
 import numpy as np
 import soundfile as sf
 
-# Windows DLL path fix for nvidia pip packages
-if sys.platform == "win32":
-    try:
-        import site
-        # Search for nvidia packages in site-packages
-        # We'll use a more direct approach by checking common venv structure
-        venv_base = os.path.dirname(sys.executable)
-        site_packages = os.path.join(venv_base, "Lib", "site-packages")
-        nvidia_base = os.path.join(site_packages, "nvidia")
-        
-        if os.path.exists(nvidia_base):
-            for root, dirs, files in os.walk(nvidia_base):
-                if "bin" in dirs:
-                    bin_path = os.path.abspath(os.path.join(root, "bin"))
-                    os.add_dll_directory(bin_path)
-                    os.environ["PATH"] = bin_path + os.pathsep + os.environ["PATH"]
-    except Exception:
-        pass
+# Centralized GPU/DLL initialization
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.gpu_init import init_gpu
+init_gpu()
 
 from kokoro_onnx import Kokoro
 from kokoro_onnx.config import KoKoroConfig, SAMPLE_RATE, MAX_PHONEME_LENGTH
