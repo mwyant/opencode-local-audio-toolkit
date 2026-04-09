@@ -1,4 +1,4 @@
-"""
+r"""
 Usage: .\venv\Scripts\python.exe stt/record_and_transcribe.py [duration_seconds]
 Description: Records from default microphone and transcribes using local GPU.
 """

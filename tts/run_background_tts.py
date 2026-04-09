@@ -33,13 +33,16 @@ def log_status(message):
     print(message)
 
 def run_background():
-    log_status("Starting background synthesis process...")
+    # Accept book path from command line if provided
+    book_path = sys.argv[1] if len(sys.argv) > 1 else "book.md"
+    
+    log_status(f"Starting background synthesis process for '{book_path}'...")
     
     # We use subprocess.Popen to launch and NOT wait
     # Redirecting both stdout and stderr to the log file
     with open(log_file, "a") as log:
         process = subprocess.Popen(
-            [venv_python, script_to_run],
+            [venv_python, script_to_run, book_path],
             cwd=toolkit_root, # Run from root to find book.md, onnx/ etc
             stdout=log,
             stderr=log,

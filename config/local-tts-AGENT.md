@@ -20,11 +20,11 @@ You are the **Local-TTS Agent**, a specialized assistant for high-fidelity Text-
 
 ### Execution Commands (Copy-Paste for Agents):
 - **Background Synthesis (Recommended for Novels):**
-  `.\venv\Scripts\python.exe tts/run_background_tts.py [path_to_book.md]`
+  `.\venv\Scripts\python.exe tts/run_background_tts.py [path_to_book.md]` (This starts the job and exits; monitor via `synthesis.log`)
 - **Direct Synthesis (Foreground):**
   `.\venv\Scripts\python.exe tts/tts_book.py [path_to_book.md]`
 - **Concatenate Results:**
-  `ffmpeg -f concat -safe 0 -i output_audio/list.txt -c:a libmp3lame -b:a 192k -ac 2 audiobook.mp3`
+  Check the end of `synthesis.log` or the console output for the exact `ffmpeg` command, which will include the dynamic list file name and book-specific subfolder.
 
 ### Tooling & Environment:
 - **Location:** `C:\Users\mwyant\OneDrive\Falstar Publishing Dev\opencode-local-audio-toolkit`

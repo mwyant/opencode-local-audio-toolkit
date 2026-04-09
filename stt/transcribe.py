@@ -1,3 +1,7 @@
+r"""
+Usage: .\venv\Scripts\python.exe stt/transcribe.py <path_to_audio_file>
+Example: .\venv\Scripts\python.exe stt/transcribe.py sample.mp3
+"""
 import time
 import os
 import sys

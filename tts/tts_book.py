@@ -1,4 +1,4 @@
-"""
+r"""
 Usage: .\venv\Scripts\python.exe tts/tts_book.py [path_to_book.md] [output_dir]
 Description: Synthesizes a markdown book into scene-based WAV files using local GPU/CPU.
 """
@@ -86,16 +86,23 @@ def run_tts():
     current_script_dir = os.path.dirname(os.path.abspath(__file__))
     toolkit_root = os.path.dirname(current_script_dir)
     
+    # Derive sanitized name from book filename
+    book_file_name = os.path.basename(book_path)
+    base_name = os.path.splitext(book_file_name)[0]
+    sanitized_name = re.sub(r'[^a-zA-Z0-9_\-]', '_', base_name)
+    
     model_path = os.path.join(toolkit_root, "onnx", "model.onnx")
     voices_path = os.path.join(toolkit_root, "voices.bin")
     
-    # Optional output directory argument
+    # Create book-specific output directory
     if len(sys.argv) > 2:
-        output_dir = sys.argv[2]
-        if not os.path.isabs(output_dir):
-            output_dir = os.path.join(toolkit_root, output_dir)
+        parent_output_dir = sys.argv[2]
+        if not os.path.isabs(parent_output_dir):
+            parent_output_dir = os.path.join(toolkit_root, parent_output_dir)
     else:
-        output_dir = os.path.join(toolkit_root, "output_audio")
+        parent_output_dir = os.path.join(toolkit_root, "output_audio")
+    
+    output_dir = os.path.join(parent_output_dir, sanitized_name)
     
     # If book_path is not absolute, make it relative to root
     if not os.path.isabs(book_path):
@@ -120,11 +127,11 @@ def run_tts():
     
     print(f"Detected {len(scenes)} scenes.")
     
-    list_file = os.path.join(output_dir, "list.txt")
+    list_file = os.path.join(output_dir, f"{sanitized_name}_list.txt")
     
     for i, scene in enumerate(scenes):
         scene_num = i + 1
-        scene_filename = f"scene_{scene_num:03d}.wav"
+        scene_filename = f"{sanitized_name}_scene_{scene_num:03d}.wav"
         scene_output = os.path.join(output_dir, scene_filename)
         
         # Add to list file immediately if it exists or when created
@@ -170,7 +177,13 @@ def run_tts():
 
     print("\nFull book synthesis completed.")
 
-    print("\nDone. Concatenate with: ffmpeg -f concat -safe 0 -i output_audio/list.txt -c copy audiobook.wav")
+    # Show relative path from toolkit root for the ffmpeg command
+    rel_output_dir = os.path.relpath(output_dir, toolkit_root)
+    rel_list_file = os.path.relpath(list_file, output_dir)
+    
+    print(f"\nDone. To concatenate, go to the output directory and run:")
+    print(f"cd \"{output_dir}\"")
+    print(f"ffmpeg -f concat -safe 0 -i {rel_list_file} -c:a libmp3lame -b:a 192k -ac 2 {sanitized_name}.mp3")
 
 if __name__ == "__main__":
     run_tts()

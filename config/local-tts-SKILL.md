@@ -20,13 +20,12 @@ metadata:
 - For rapid prototyping of audio content from blog posts, newsletters, or short stories.
 
 ## Outputs and guidance
-- A directory of `.wav` files (one per scene/chapter).
-- A `list.txt` file for rapid FFmpeg concatenation.
+- A subdirectory per book containing `.wav` files (prefixed with sanitized book name).
+- A book-specific `list.txt` file for rapid FFmpeg concatenation.
 - High-quality, human-like voice synthesis (defaulting to `af_heart`).
 
 ## How to run
 1. Ensure the `opencode-local-audio-toolkit` environment is available at `C:\Users\mwyant\OneDrive\Falstar Publishing Dev\opencode-local-audio-toolkit`.
-2. Run the `tts/tts_book.py` script located in the toolkit directory.
-3. Use `tts/run_background_tts.py` for long-running novel synthesis.
-4. Concatenate output with:
-   `ffmpeg -f concat -safe 0 -i output_audio/list.txt -c copy audiobook.wav`
+2. Run the `tts/tts_book.py [path_to_book.md]` script.
+3. Use `tts/run_background_tts.py [path_to_book.md]` for background synthesis.
+4. Check script output for the exact `ffmpeg` command to concatenate results.
