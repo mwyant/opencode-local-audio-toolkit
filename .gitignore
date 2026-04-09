@@ -1,0 +1,25 @@
+# Audio files
+output_audio/
+*.wav
+*.mp3
+voice_input.wav
+test_silent.wav
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Models and Large Files
+onnx/
+voices.bin
+*.bin
+*.onnx
+*.log
+SYNTHESIS_STATUS.txt
+
+# Local data
+book.md
+synthesis.log
