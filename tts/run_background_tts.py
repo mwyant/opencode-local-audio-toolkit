@@ -9,8 +9,13 @@ current_script_dir = os.path.dirname(os.path.abspath(__file__))
 # Toolkit root is one level up from the 'tts' folder
 toolkit_root = os.path.dirname(current_script_dir)
 
-# If running from a venv, try to find the python executable
-if sys.prefix != sys.base_prefix:
+# Explicitly look for the local venv first
+local_venv_python = os.path.join(toolkit_root, "venv", "Scripts", "python.exe") if sys.platform == 'win32' else os.path.join(toolkit_root, "venv", "bin", "python")
+
+if os.path.exists(local_venv_python):
+    venv_python = local_venv_python
+# Else fall back to current interpreter
+elif sys.prefix != sys.base_prefix:
     if sys.platform == 'win32':
         venv_python = os.path.join(sys.prefix, "Scripts", "python.exe")
     else:

@@ -89,10 +89,20 @@ def split_into_chunks(text, max_chars=500):
     return chunks
 
 def run_tts():
-    model_path = "onnx/model.onnx"
-    voices_path = "voices.bin"
-    book_path = "book.md"
-    output_dir = "output_audio"
+    # Use command line argument if provided, otherwise default to book.md
+    book_path = sys.argv[1] if len(sys.argv) > 1 else "book.md"
+    
+    # Ensure paths are relative to the toolkit root
+    current_script_dir = os.path.dirname(os.path.abspath(__file__))
+    toolkit_root = os.path.dirname(current_script_dir)
+    
+    model_path = os.path.join(toolkit_root, "onnx", "model.onnx")
+    voices_path = os.path.join(toolkit_root, "voices.bin")
+    output_dir = os.path.join(toolkit_root, "output_audio")
+    
+    # If book_path is not absolute, make it relative to root
+    if not os.path.isabs(book_path):
+        book_path = os.path.join(toolkit_root, book_path)
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
